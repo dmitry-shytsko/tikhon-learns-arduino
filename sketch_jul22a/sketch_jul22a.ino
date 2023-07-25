@@ -76,11 +76,10 @@ void nextStepBlink() {
 }
 
 void nextStepNoBlink() {
-  //Main logic: sending voltage to LEDs
+  int adcValue = analogRead(A0);
   for (int i = 0; i < ledCount; i++) {
-    analogWrite(ledpins[i], map(100, 0, 100, 0, 255));      
+    analogWrite(ledpins[i], map(adcValue, 0, 1023, 0, 255));      
   }
-  delay(25);
 }
 
 void loop() {
