@@ -6,6 +6,7 @@ int ledPinG = 10;
 int ledPinB = 9;
 int buzzerPin = 8;
 int buttonPin = 2;
+int infraPin = 6;
 
 void setup() {
   pinMode(ledPinR, OUTPUT);
@@ -13,6 +14,7 @@ void setup() {
   pinMode(ledPinB, OUTPUT);
   pinMode(buzzerPin, OUTPUT);
   pinMode(buttonPin, INPUT);
+  pinMode(infraPin, INPUT);
   Serial.begin(9600);
 }
 
@@ -23,14 +25,15 @@ const int NO_DISCO_MODE = 0;
 const int DISCO_MODE_LIGHTS_ONLY = 1;
 const int DISCO_MODE_CRAZY = 2;
 const int DISCO_MODE_LIGHT_BASED = 3;
-const int MODE_COUNT = 4;
+const int DISCO_MODE_INFRA = 4;
+const int MODE_COUNT = 5;
 
-int currentMode = DISCO_MODE_LIGHT_BASED;
+int currentMode = DISCO_MODE_INFRA;
 
 bool inputEventPending = false;
 bool inputEventProcessed = false;
 
-void loop() {  
+void checkMode() {
   if (digitalRead(buttonPin) == HIGH) {
     inputEventPending = true;
   } else {
@@ -44,6 +47,10 @@ void loop() {
     Serial.println(currentMode);
     inputEventProcessed = true;
   }
+}
+
+void loop() {  
+  checkMode();
 
   bool discoLights = false;
   bool discoMusic = false;
@@ -61,6 +68,14 @@ void loop() {
     int sveta_detect0r = map(analogRead(A5), 0, 1023, 0, 100);
     discoLights = sveta_detect0r > 30;
     discoMusic = sveta_detect0r > 30;
+  }
+
+  if (currentMode == DISCO_MODE_INFRA){
+    int infraRead = digitalRead(infraPin);
+    if (infraRead == HIGH) {
+      discoLights = true;
+      discoMusic = true;
+    }
   }
 
   if (discoLights) {
