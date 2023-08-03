@@ -1,12 +1,12 @@
 #include "FloatingColor.h"
 #include "Jukebox.h"
 
-int ledPinR = 11;
-int ledPinG = 10;
-int ledPinB = 9;
-int buzzerPin = 8;
-int buttonPin = 2;
-int infraPin = 6;
+const int ledPinR = 11;
+const int ledPinG = 10;
+const int ledPinB = 9;
+const int buzzerPin = 8;
+const int buttonPin = 2;
+const int infraPin = 6;
 
 void setup() {
   pinMode(ledPinR, OUTPUT);
@@ -28,7 +28,7 @@ const int DISCO_MODE_LIGHT_BASED = 3;
 const int DISCO_MODE_INFRA = 4;
 const int MODE_COUNT = 5;
 
-int currentMode = DISCO_MODE_INFRA;
+int currentMode = NO_DISCO_MODE;
 
 bool inputEventPending = false;
 bool inputEventProcessed = false;
