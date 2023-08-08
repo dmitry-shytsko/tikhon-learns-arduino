@@ -33,6 +33,12 @@ int currentMode = NO_DISCO_MODE;
 bool inputEventPending = false;
 bool inputEventProcessed = false;
 
+bool nextSongEventPending = false;
+bool nextSongEventProcessed = false;
+
+bool prevSongEventPending = false;
+bool prevSongEventProcessed = false;
+
 void checkMode() {
   if (digitalRead(buttonPin) == HIGH) {
     inputEventPending = true;
@@ -49,8 +55,34 @@ void checkMode() {
   }
 }
 
+void checkJoystick() {
+  int jopStick = analogRead(A3);
+
+  if (jopStick < 100) {
+    nextSongEventPending = true;
+  } else if (jopStick > 923) {
+    prevSongEventPending = true;
+  } else {
+    nextSongEventPending = false;
+    nextSongEventProcessed = false;
+    prevSongEventPending = false;
+    prevSongEventProcessed = false;
+  }
+
+  if (nextSongEventPending && !nextSongEventProcessed) {
+    jukebox.nextMelody();
+    nextSongEventProcessed = true;
+  }
+
+  if (prevSongEventPending && !prevSongEventProcessed) {
+    jukebox.prevMelody();
+    prevSongEventProcessed = true;
+  }
+}
+
 void loop() {  
   checkMode();
+  checkJoystick();
 
   bool discoLights = false;
   bool discoMusic = false;

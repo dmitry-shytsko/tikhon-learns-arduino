@@ -2,14 +2,17 @@
 #include "melodies.h"
 
 Melody pinkPantherM(pinkPanther, pinkPantherSize, 120);
-Melody darthVaderM(darthVader, darthVaderSize, 108);
-Melody allMelodies[] = {pinkPantherM, darthVaderM};
-int allMelodiesCount = 2;
+//Melody darthVaderM(darthVader, darthVaderSize, 108);
+Melody nokiaM(nokia, nokiaSize, 108);
+Melody godfatherM(godfather, godfatherSize, 108);
+Melody tetrisM(tetris, tetrisSize, 108);
+Melody allMelodies[] = {pinkPantherM, /*darthVaderM,*/ nokiaM, godfatherM, tetrisM};
+int allMelodiesCount = 4;
 
 class Jukebox {
   private:
     Melody *melodies;
-    int melodyCount = 2;
+    int melodyCount;
     int currMelodyIdx = 0;
     
   public:
@@ -29,6 +32,11 @@ class Jukebox {
 
     int nextMelody() {
       currMelodyIdx = (currMelodyIdx + 1) % melodyCount;
+    }
+
+    int prevMelody() {
+      currMelodyIdx--;
+      currMelodyIdx = max(currMelodyIdx, 0);
     }
 
     void playOnBuzzerWithDelay(int buzzerPin) {
